@@ -3,10 +3,15 @@ declare(strict_types = 1);
 
 namespace rark\simple_economy;
 
-use pocketmine\player\Player;
 use pocketmine\utils\Config;
+use rark\simple_economy\event\AddMoneyEvent;
+use rark\simple_economy\event\GiveMoneyEvent;
+use rark\simple_economy\event\ReduceMoneyEvent;
 
 class Money extends Config{
+
+	const KEY_VALID = 'valid';
+	const KEY_TOTAL = 'total';
 
 	protected string $name;
 	protected string $prefix;
@@ -43,27 +48,52 @@ class Money extends Config{
 	}
 
 	public function setMoney(Account $account, int $amount):void{
-		$this->set($account->getName(), $amount);
+		$old = $this->get(self::KEY_VALID, []);
+		$old[$account->getName()] = $amount;
+		$this->set(self::KEY_VALID, $old);
 	}
 
 	public function getMoney(Account $account):int{
-		return $this->get($account->getName(), null)?? $this->default;
+		$old = $this->get(self::KEY_VALID, []);
+		return isset($old[$account->getName()])? $old[$account]: $this->default;
 	}
 
 	public function addMoney(Account $account, int $amount):bool{
-		if(!$this->canAddMoney($account, $amount)) return false;
+		$ev = new AddMoneyEvent($account, $amount, $this->canAddMoney($account, $amount));
+		$ev->call();
+		$amount = $ev->getAmount();
+
+		if(!$this->canAddMoney($account, $amount) or $ev->isCancelled()) return false;
+		$old = $this->get(self::KEY_TOTAL, []);
+
+		if(!isset($old[$account->getName()])) $old[$account->getName()] = 0;
+		$old[$account->getName()] += $amount;
+		$this->set(self::KEY_TOTAL, $old);
 		$this->setMoney($account, $this->getMoney($account)+$amount);
 		return true;
 	}
 
+	public function getTotalMoney(Account $account):int{
+		$old = $this->get(self::KEY_TOTAL, []);
+		return isset($old[$account->getName()])? $old[$account]: $this->default;
+	}
+
 	public function reduceMoney(Account $account, int $amount):bool{
-		if(!$this->canReduceMoney($account, $amount)) return false;
+		$ev = new ReduceMoneyEvent($account, $amount, $this->canReduceMoney($account, $amount));
+		$ev->call();
+		$amount = $ev->getAmount();
+
+		if(!$this->canReduceMoney($account, $amount) or $ev->isCancelled()) return false;
 		$this->setMoney($account, $this->getMoney($account)-$amount);
 		return true;
 	}
 
 	public function giveMoney(Account $from, Account $to, int $amount):bool{
-		if(!$this->canAddMoney($to, $amount) or !$this->canReduceMoney($from, $amount)) return false;
+		$ev = new GiveMoneyEvent($from, $to, $amount, !$this->canAddMoney($to, $amount) or !$this->canReduceMoney($from, $amount));
+		$ev->call();
+		$amount = $ev->getAmount();
+
+		if($ev->isCancelled() or (!$this->canAddMoney($to, $amount) or !$this->canReduceMoney($from, $amount))) return false;
 		$this->addMoney($to, $amount);
 		$this->reduceMoney($from, $amount);
 		return true;

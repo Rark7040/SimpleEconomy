@@ -17,7 +17,6 @@ class Main extends PluginBase{
 			throw new \RuntimeException('Configが正しく生成できませんでした');
 		}
 		Economy::init(new Config($this->getDataFolder().'Config.yml', Config::YAML));
-		$this->getServer()->getPluginManager()->registerEvents(new EventHandler, $this);
 	}
 
 	public static function getPluginDataPath():string{
