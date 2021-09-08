@@ -8,6 +8,7 @@ use pocketmine\utils\TextFormat;
 use rark\simple_economy\Account;
 use rark\simple_economy\Economy;
 use rark\simple_economy\form\api\CustomForm;
+use rark\simple_economy\form\api\SimpleForm;
 use rark\simple_economy\Money;
 
 class MoneyForms{
@@ -124,6 +125,29 @@ class MoneyForms{
 					}
 				)
 			);
+		};
+		return $form;
+	}
+
+	public static function getViewForm():CustomForm{
+		$form = new CustomForm;
+		$form->addDropdown('account', '対象', 0, ...Account::getAllAccountNames());
+		$form->submit = function(Player $player, array $data):void{
+			if(!isset($data['account'])){
+				$player->sendMessage(TextFormat::RED.'不正な入力データです');
+				return;
+			}
+			$target = Account::findByName($data['account']);
+			$view_form = new SimpleForm;
+			
+			foreach(Economy::getAllMoneyNames() as $name){
+				$money = Economy::getInstance($name);
+
+				if(!$money instanceof Money) continue;
+				$view_form->label .= $money->getFormatted($money->getMoney($target)).PHP_EOL.PHP_EOL;
+			}
+			$view_form->addButton('close');
+			$player->sendForm($view_form);
 		};
 		return $form;
 	}
