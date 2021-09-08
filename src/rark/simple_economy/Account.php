@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace rark\simple_economy;
 
-use ErrorException;
+use Exception;
 use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
@@ -20,13 +20,13 @@ class Account{
 			try{
 				self::$instances[$name] = new self($name);
 
-			}catch(ErrorException $error){
+			}catch(Exception){
 				print_r(TextFormat::RED.$name.'のアカウントが復元できませんでした(考えられる原因: playersフォルダ上のデータ削除)');
 			}
 		}
 	}
 
-	public function __construct(string $name){
+	protected function __construct(string $name){
 		if(!isset(self::$instances[$name])){
 			if(Server::getInstance()->getOfflinePlayer($name) === null){
 				throw new \ErrorException('不正なアカウントが生成されました');
@@ -43,6 +43,10 @@ class Account{
 		$conf = new Config(Main::getPluginDataPath().'Accounts.json', Config::JSON);
 		$conf->setAll(array_combine(array_keys(self::$instances), array_fill(0, count(self::$instances), true)));
 		$conf->save();
+	}
+
+	public static function findByName(string $name):self{
+		return isset(self::$instances[$name])? isset(self::$instances[$name]): new self($name);
 	}
 
 	public function getName():string{
