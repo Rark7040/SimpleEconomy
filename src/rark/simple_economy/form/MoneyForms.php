@@ -8,23 +8,18 @@ use pocketmine\utils\TextFormat;
 use rark\simple_economy\Account;
 use rark\simple_economy\Economy;
 use rark\simple_economy\form\api\CustomForm;
-use rark\simple_economy\form\api\SimpleForm;
 use rark\simple_economy\Money;
 
 class MoneyForms{
 
-	protected static CustomForm $add_form;
-	protected static CustomForm $give_form;
 	protected static CustomForm $ranking_select_form;
-	protected static CustomForm $reduce_form;
-	protected static CustomForm $set_form;
 	protected static CustomForm $view_select_form;
 
-	public static function init():void{
-		self::$add_form = new CustomForm;
-		self::$add_form->addDropdown('account', '対象', 0, ...Account::getAllAccountNames());
-		self::$add_form->addDropdown('currency', '種類', 0, ...Economy::getAllMoneyNames());
-		self::$add_form->submit = function(Player $player, array $data):void{
+	public static function getAddMoneyForm():CustomForm{
+		$form = new CustomForm;
+		$form->addDropdown('account', '対象', 0, ...Account::getAllAccountNames());
+		$form->addDropdown('currency', '種類', 0, ...Economy::getAllMoneyNames());
+		$form->submit = function(Player $player, array $data):void{
 			if(!isset($data['account']) or !isset($data['currency'])){
 				$player->sendMessage(TextFormat::RED.'不正な入力データです');
 				return;
@@ -45,6 +40,91 @@ class MoneyForms{
 				)
 			);
 		};
-		
+		return $form;
+	}
+
+	public static function getGiveMoneyForm():CustomForm{
+		$form = new CustomForm;
+		$form->addDropdown('account', '対象', 0, ...Account::getAllAccountNames());
+		$form->addDropdown('currency', '種類', 0, ...Economy::getAllMoneyNames());
+		$form->submit = function(Player $player, array $data):void{
+			if(!isset($data['account']) or !isset($data['currency'])){
+				$player->sendMessage(TextFormat::RED.'不正な入力データです');
+				return;
+			}
+			$account = Account::findByName($player->getName());
+			$target = Account::findByName($data['account']);
+			$money = Economy::getInstance($data['currency']);
+
+			if(!$money instanceof Money){
+				$player->sendMessage(TextFormat::RED.'通貨インスタンスを生成できませんでした');
+				return;
+			}
+			$player->sendForm(
+				new InputAmountForm(
+					$money->getMoney($account),
+					function(int $amount) use($account, $target, $money):void{
+						$money->giveMoney($account, $target, $amount);
+					}
+				)
+			);
+		};
+		return $form;
+	}
+
+	public static function getReduceForm():CustomForm{
+		$form = new CustomForm;
+		$form->addDropdown('account', '対象', 0, ...Account::getAllAccountNames());
+		$form->addDropdown('currency', '種類', 0, ...Economy::getAllMoneyNames());
+		$form->submit = function(Player $player, array $data):void{
+			if(!isset($data['account']) or !isset($data['currency'])){
+				$player->sendMessage(TextFormat::RED.'不正な入力データです');
+				return;
+			}
+			$target = Account::findByName($data['account']);
+			$money = Economy::getInstance($data['currency']);
+
+			if(!$money instanceof Money){
+				$player->sendMessage(TextFormat::RED.'通貨インスタンスを生成できませんでした');
+				return;
+			}
+			$player->sendForm(
+				new InputAmountForm(
+					1000_0000,
+					function(int $amount) use($target, $money):void{
+						$money->reduceMoney($target, $amount);
+					}
+				)
+			);
+		};
+		return $form;
+	}
+
+	public static function getSetForm():CustomForm{
+		$form = new CustomForm;
+		$form->addDropdown('account', '対象', 0, ...Account::getAllAccountNames());
+		$form->addDropdown('currency', '種類', 0, ...Economy::getAllMoneyNames());
+		$form->submit = function(Player $player, array $data):void{
+			if(!isset($data['account']) or !isset($data['currency'])){
+				$player->sendMessage(TextFormat::RED.'不正な入力データです');
+				return;
+			}
+			$target = Account::findByName($data['account']);
+			$money = Economy::getInstance($data['currency']);
+
+			if(!$money instanceof Money){
+				$player->sendMessage(TextFormat::RED.'通貨インスタンスを生成できませんでした');
+				return;
+			}
+			$player->sendForm(
+				new InputAmountForm(
+					1000_0000,
+					function(int $amount) use($target, $money):void{
+						$money->setMoney($target, $amount);
+					}
+				)
+			);
+		};
+		return $form;
 	}
 }
