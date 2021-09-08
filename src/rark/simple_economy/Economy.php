@@ -5,6 +5,7 @@ namespace rark\simple_economy;
 
 use InvalidArgumentException;
 use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat;
 
 class Economy{
 	/** @var Money[string] */
@@ -15,6 +16,11 @@ class Economy{
 
 		if(!isset($setting['currencies'])) throw new InvalidArgumentException('currencies キーが存在しません');
 		foreach($setting['currencies'] as $name => $data){
+			if(!isset($data['prefix']) or !isset($data['prefix_position']) or !isset($data['default'])){
+				print_r(TextFormat::RED.'必要なキーが存在しない為,'.$name.'を正しく生成できませんでした');
+				continue;
+			}
+			self::$currencies[$name] = new Money($name, $data['prefix'], $data['prefix_position'], $data['default']);
 		}
 	}
 
@@ -22,7 +28,7 @@ class Economy{
 		return isset(self::$currencies[$name])? self::$currencies[$name]: null;
 	}
 
-	public function __destruct(){
+	public static function save(){
 		foreach(self::$currencies as $money) $money->save();
 	}
 }

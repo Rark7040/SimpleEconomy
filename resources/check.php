@@ -2,12 +2,11 @@
 declare(strict_types = 1);
 
 
-
-foreach([
-  'aaa' => 19,
-  'bbbb' => 20,
-  'cccc' => 21,
-
-] as $value) {
-  echo $value;
+class A{
+  function getA(){
+    return 'a';
+  }
 }
+
+$a = null;
+var_dump($a?->getA());

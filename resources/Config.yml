@@ -4,7 +4,9 @@
     #true => 数字の先頭  $1,000
     #false => 数字の後ろ 1,000$
     'prefix_position': true
+    'default': 1000
     
   'dollar': 
     'prefix': '$'
     'prefix_position': true
+    'default': 1000
