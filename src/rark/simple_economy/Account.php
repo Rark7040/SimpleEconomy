@@ -3,12 +3,28 @@ declare(strict_types = 1);
 
 namespace rark\simple_economy;
 
+use ErrorException;
 use pocketmine\Server;
+use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat;
 
 class Account{
 	/** @var self[string] */
 	protected static array $instances = [];
 	protected string $name;
+
+	public static function init():void{
+		$conf = new Config(Main::getPluginDataPath().'Accounts.json', Config::JSON);
+
+		foreach($conf->getAll() as $name => $true){
+			try{
+				self::$instances[$name] = new self($name);
+
+			}catch(ErrorException $error){
+				print_r(TextFormat::RED.$name.'のアカウントが復元できませんでした(考えられる原因: playersフォルダ上のデータ削除)');
+			}
+		}
+	}
 
 	public function __construct(string $name){
 		if(!isset(self::$instances[$name])){
@@ -21,7 +37,12 @@ class Account{
 		}else{
 			$this->name = $name;
 		}
+	}
 
+	public function __destruct(){
+		$conf = new Config(Main::getPluginDataPath().'Accounts.json', Config::JSON);
+		$conf->setAll(array_combine(array_keys(self::$instances), array_fill(0, count(self::$instances), true)));
+		$conf->save();
 	}
 
 	public function getName():string{
