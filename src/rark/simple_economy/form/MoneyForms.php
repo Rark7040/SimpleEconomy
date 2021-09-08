@@ -13,9 +13,6 @@ use rark\simple_economy\Money;
 
 class MoneyForms{
 
-	protected static CustomForm $ranking_select_form;
-	protected static CustomForm $view_select_form;
-
 	public static function getAddMoneyForm():CustomForm{
 		$form = new CustomForm;
 		$form->addDropdown('account', '対象', 0, ...Account::getAllAccountNames());

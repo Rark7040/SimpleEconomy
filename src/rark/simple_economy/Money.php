@@ -100,10 +100,17 @@ class Money extends Config{
 	}
 
 	public function canAddMoney(Account $account, int $amount):bool{
-		return $this->getMoney($account)+$amount < PHP_INT_MAX;
+		return $this->getMoney($account)+$amount < 1000_0000;
 	}
 
 	public function canReduceMoney(Account $account, int $amount):bool{
 		return $this->getMoney($account)-$amount > -1;
+	}
+
+	const OPTION_EXCLUSION_OPERATORS = 0b001;
+	const OPTION_TOTAL_MONEY = 0b010;
+	const OPTION_VALID_MONEY = 0b100;
+	public function getRanking(int $option){
+
 	}
 }
