@@ -13,6 +13,7 @@ class MoneyCommand extends BaseCommand{
 
 	public function __construct(PluginBase $plugin){
 		parent::__construct($plugin, 'money', 'お金に関するあれこれ', ['m']);
+		$this->setPermission('simple_economy.command.public');
 	}
 
 	protected function prepare():void{}
