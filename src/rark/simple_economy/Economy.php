@@ -24,7 +24,7 @@ class Economy{
 		}
 	}
 
-	public static function findByName(string $name):?Money{
+	public static function getInstance(string $name):?Money{
 		return isset(self::$currencies[$name])? self::$currencies[$name]: null;
 	}
 
