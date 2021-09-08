@@ -41,7 +41,7 @@ class Money extends Config{
 		return $this->default;
 	}
 
-	public function getFormattedAmount(int $amount):string{
+	public function getFormatted(int $amount):string{
 		return $this->prefix_pos?
 			$this->prefix.number_format($amount):
 			number_format($amount).$this->prefix;

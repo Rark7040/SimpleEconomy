@@ -28,6 +28,10 @@ class Economy{
 		return isset(self::$currencies[$name])? self::$currencies[$name]: null;
 	}
 
+	public static function getAllMoneyNames():array{
+		return array_keys(self::$currencies);
+	}
+
 	public static function save(){
 		foreach(self::$currencies as $money) $money->save();
 	}

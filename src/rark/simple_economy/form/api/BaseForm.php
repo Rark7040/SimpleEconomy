@@ -17,9 +17,9 @@ abstract class BaseForm implements Form{
 	protected array $contents = [];
 	public string $title = '';
 	public string $label = '';
-	public $submit;
-	public $cancelled;
-	public $illegal;
+	public callable $submit;
+	public callable $cancelled;
+	public callable $illegal;
 
 	public function reciveIllegalData(Player $player):void{
 		if(!is_callable($this->illegal)) return;

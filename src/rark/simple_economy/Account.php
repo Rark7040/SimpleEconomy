@@ -52,4 +52,11 @@ class Account{
 	public function getName():string{
 		return $this->name;
 	}
+	
+	/**
+	 * @return string[]
+	 */
+	public static function getAllAccountNames():array{
+		return array_keys(self::$instances);
+	}
 }
