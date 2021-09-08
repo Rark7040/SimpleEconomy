@@ -42,38 +42,38 @@ class Money extends Config{
 			number_format($amount).$this->prefix;
 	}
 
-	public function setMoney(Player $player, int $amount):void{
-		$this->set($player->getName(), $amount);
+	public function setMoney(Account $account, int $amount):void{
+		$this->set($account->getName(), $amount);
 	}
 
-	public function getMoney(Player $player):int{
-		return $this->get($player->getName(), null)?? $this->default;
+	public function getMoney(Account $account):int{
+		return $this->get($account->getName(), null)?? $this->default;
 	}
 
-	public function addMoney(Player $player, int $amount):bool{
-		if(!$this->canAddMoney($player, $amount)) return false;
-		$this->setMoney($player, $this->getMoney($player)+$amount);
+	public function addMoney(Account $account, int $amount):bool{
+		if(!$this->canAddMoney($account, $amount)) return false;
+		$this->setMoney($account, $this->getMoney($account)+$amount);
 		return true;
 	}
 
-	public function reduceMoney(Player $player, int $amount):bool{
-		if(!$this->canReduceMoney($player, $amount)) return false;
-		$this->setMoney($player, $this->getMoney($player)-$amount);
+	public function reduceMoney(Account $account, int $amount):bool{
+		if(!$this->canReduceMoney($account, $amount)) return false;
+		$this->setMoney($account, $this->getMoney($account)-$amount);
 		return true;
 	}
 
-	public function giveMoney(Player $from, Player $to, int $amount):bool{
+	public function giveMoney(Account $from, Account $to, int $amount):bool{
 		if(!$this->canAddMoney($to, $amount) or !$this->canReduceMoney($from, $amount)) return false;
 		$this->addMoney($to, $amount);
 		$this->reduceMoney($from, $amount);
 		return true;
 	}
 
-	public function canAddMoney(Player $player, int $amount):bool{
-		return $this->getMoney($player)+$amount < PHP_INT_MAX;
+	public function canAddMoney(Account $account, int $amount):bool{
+		return $this->getMoney($account)+$amount < PHP_INT_MAX;
 	}
 
-	public function canReduceMoney(Player $player, int $amount):bool{
-		return $this->getMoney($player)-$amount > -1;
+	public function canReduceMoney(Account $account, int $amount):bool{
+		return $this->getMoney($account)-$amount > -1;
 	}
 }
