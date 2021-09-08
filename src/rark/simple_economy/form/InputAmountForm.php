@@ -9,18 +9,18 @@ use rark\simple_economy\Account;
 use rark\simple_economy\form\api\CustomForm;
 use rark\simple_economy\Money;
 
-class SelectAmountForm extends CustomForm{
+class InputAmountForm extends CustomForm{
 	/**
-	 * fucntion(Account $account, Money $money, int $amount):void;
+	 * fucntion(int $amount):void;
 	 * 
 	 * @var callable
 	 */
 	protected callable $func;
 
-	public function __construct(Account $account, Money $money, callable $func, string ...$steps){
-		$this->addStepSlider('amount', '金額', 0, ...($steps = self::getValidArray($money->getMoney($account))));
+	public function __construct(int $max_amount, callable $func){
+		$this->addStepSlider('amount', '金額', 0, ...($steps = self::getValidArray($max_amount)));
 		$this->func = $func;
-		$this->submit = function(Player $player, array $data) use($account, $money, $steps):void{
+		$this->submit = function(Player $player, array $data) use($steps):void{
 			if(!isset($data['amount'])){
 				$player->sendMessage(TextFormat::RED.'金額が入力されていません。');
 				return;
@@ -31,7 +31,7 @@ class SelectAmountForm extends CustomForm{
 				$player->sendMessage(TextFormat::RED.'有効な値ではありません。半角英数字で入力してください。');
 				return;
 			}
-			($this->func)($account, $money, $result);
+			($this->func)($result);
 		};
 	}
 
