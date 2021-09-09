@@ -12,12 +12,13 @@ class Main extends PluginBase{
 	protected static string $data_folder;
 
 	protected function onEnable():void{
-		PacketHooker::register($this);
+		if(!PacketHooker::isRegistered()) PacketHooker::register($this);
 		self::$data_folder = $this->getDataFolder().'internal/';
 
 		if(!is_dir($this->getDataFolder().'internal')){
 			@mkdir($this->getDataFolder().'internal');
 		}
+
 		$this->reloadConfig();
 		if(!$this->saveResource('config.yml', true)){
 			throw new \RuntimeException('Configが正しく生成できませんでした');
@@ -26,6 +27,8 @@ class Main extends PluginBase{
 		Account::init();
 		$this->getServer()->getCommandMap()->register($this->getName(), new MoneyCommand($this));
 	}
+
+	
 
 	public static function getPluginDataPath():string{
 		return self::$data_folder;
