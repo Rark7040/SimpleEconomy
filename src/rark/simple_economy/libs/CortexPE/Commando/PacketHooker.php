@@ -33,7 +33,7 @@ namespace rark\simple_economy\libs\CortexPE\Commando;
 use rark\simple_economy\libs\CortexPE\Commando\exception\HookAlreadyRegistered;
 use rark\simple_economy\libs\CortexPE\Commando\store\SoftEnumStore;
 use rark\simple_economy\libs\CortexPE\Commando\traits\IArgumentable;
-use muqsit\simplepackethandler\SimplePacketHandler;
+use rark\simple_economy\libs\muqsit\simplepackethandler\SimplePacketHandler;
 use pocketmine\command\CommandMap;
 use pocketmine\command\CommandSender;
 use pocketmine\event\EventPriority;
