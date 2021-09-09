@@ -13,7 +13,7 @@ use rark\simple_economy\libs\CortexPE\Commando\BaseSubCommand;
 class AddSubCommand extends BaseSubCommand{
 
 	public function __construct(){
-		parent::__construct('Add', '所持金を任意の値増加させます');
+		parent::__construct('add', '所持金を任意の値増加させます');
 		$this->setPermission('simple_economy.command.op');
 	}
 

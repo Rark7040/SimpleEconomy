@@ -21,6 +21,8 @@ class Economy{
 				continue;
 			}
 			self::$currencies[$name] = new Money($name, $data['prefix'], $data['prefix_position'], $data['default']);
+			self::$currencies[$name]->updateRanking();
+			self::$currencies[$name]->updateRanking(true);
 		}
 	}
 

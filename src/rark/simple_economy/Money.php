@@ -21,14 +21,13 @@ class Money extends Config{
 	protected Ranking $total_ranking;
 
 	public function __construct(string $name, string $prefix, bool $prefix_pos, int $default){
+		parent::__construct(Main::getPluginDataPath().$name.'.json', Config::JSON);
 		$this->name = $name;
 		$this->prefix = $prefix;
 		$this->prefix_pos = $prefix_pos;
 		$this->default = $default;
 		$this->ranking = new Ranking($this);
 		$this->total_ranking = new Ranking($this, true);
-		$this->updateRanking();
-		parent::__construct(Main::getPluginDataPath().$name.'json', Config::JSON);
 	}
 
 	public function __destruct(){
@@ -128,7 +127,7 @@ class Money extends Config{
 			$values[] = $value;
 		}
 		array_multisort($values, $names);
-		$array = array_reverse(array_combine($names, $value));
+		$array = array_reverse(array_combine($names, $values));
 		$is_total? $this->total_ranking->upload($array): $this->ranking->upload($array);
 	}
 }

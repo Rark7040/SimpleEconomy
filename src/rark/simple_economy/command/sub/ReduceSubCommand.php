@@ -13,7 +13,7 @@ use rark\simple_economy\libs\CortexPE\Commando\BaseSubCommand;
 class ReduceSubCommand extends BaseSubCommand{
 
 	public function __construct(){
-		parent::__construct('set', '所持金を任意の値減少させます');
+		parent::__construct('reduce', '所持金を任意の値減少させます');
 		$this->setPermission('simple_economy.command.op');
 	}
 

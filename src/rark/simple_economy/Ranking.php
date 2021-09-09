@@ -18,7 +18,6 @@ class Ranking extends Config implements Stringable{
 	public function __construct(Money $money, bool $is_total = false){
 		parent::__construct(Main::getPluginDataPath().$money->getName().'_Ranking'.(int)$is_total.'.json', Config::JSON);
 		$this->money = $money;
-		$money->updateRanking($is_total);
 	}
 
 	public function upload(array $sorted_player_data):void{
@@ -49,7 +48,7 @@ class Ranking extends Config implements Stringable{
 	 * @throws \InvalidArgumentException
 	 */
 	public function updateRankingText(array $data):void{
-		if(!isset($data[0])) throw new \InvalidArgumentException('please refer toRankingText.php at line 12');
+		if(isset($data[0])) return;
 		$this->str_ranking = '';
 		$conditions = ['§l§a⇧§r', '§l§7-§r', '§l§c⇩§r'];
         $colors = ['§l§e', '§l§7', '§l§6', '§l§f', '§l§f', '§l§f', '§l§f', '§l§f', '§l§f', '§l§f'];
