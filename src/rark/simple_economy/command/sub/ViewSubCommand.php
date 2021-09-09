@@ -6,6 +6,7 @@ namespace rark\simple_economy\command\sub;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
+use rark\simple_economy\form\MoneyForms;
 use rark\simple_economy\libs\CortexPE\Commando\BaseSubCommand;
 
 class ViewSubCommand extends BaseSubCommand{
@@ -23,6 +24,6 @@ class ViewSubCommand extends BaseSubCommand{
 			$sender->sendMessage(TextFormat::RED.'ゲーム内で実行してください');
 			return;
 		}
-		//$sender->sendForm();
+		$sender->sendForm(MoneyForms::getViewForm());
 	}
 }

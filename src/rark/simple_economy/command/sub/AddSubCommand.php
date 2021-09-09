@@ -7,6 +7,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
+use rark\simple_economy\form\MoneyForms;
 use rark\simple_economy\libs\CortexPE\Commando\BaseSubCommand;
 
 class AddSubCommand extends BaseSubCommand{
@@ -30,6 +31,6 @@ class AddSubCommand extends BaseSubCommand{
 			$sender->sendMessage(TextFormat::RED.'実行権限がありません');
 			return;
 		}
-		//$sender->sendForm();
+		$sender->sendForm(MoneyForms::getAddForm());
 	}
 }
