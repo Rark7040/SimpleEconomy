@@ -113,21 +113,32 @@ class Money extends Config{
 		return $this->getMoney($account)-$amount > -1;
 	}
 
-	public function getRanking(bool $is_total = false):Ranking{
-		return $is_total? clone $this->total_ranking: clone $this->ranking; 
+	public function getRanking():Ranking{
+		return clone $this->ranking; 
 	}
 
-	public function updateRanking(bool $is_total = false):void{
-		$old = $is_total? $this->get(self::KEY_TOTAL, []): $this->get(self::KEY_VALID, []);
-        $names = [];
+	public function getTotalRanking():Ranking{
+		return clone $this->total_ranking;
+	}
+
+	public function updateRanking():void{
+		$this->ranking->upload($this->sortRankingData($this->get(self::KEY_VALID, [])));
+	}
+
+	public function updateTotalRanking():void{
+		$this->ranking->upload($this->sortRankingData($this->get(self::KEY_TOTAL, [])));
+	}
+
+	/**	@var int[string] $data */
+	protected function sortRankingData(array $data):array{
+		$names = [];
         $values = [];
 
-		foreach($old as $name => $value){
+		foreach($data as $name => $value){
 			$names[] = $name;
 			$values[] = $value;
 		}
 		array_multisort($values, $names);
-		$array = array_reverse(array_combine($names, $values));
-		$is_total? $this->total_ranking->upload($array): $this->ranking->upload($array);
+		return array_reverse(array_combine($names, $values));
 	}
 }
