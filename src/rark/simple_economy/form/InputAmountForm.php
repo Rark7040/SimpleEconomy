@@ -15,7 +15,7 @@ class InputAmountForm extends CustomForm{
 	 * 
 	 * @var callable
 	 */
-	protected callable $func;
+	protected $func;
 
 	public function __construct(int $max_amount, callable $func){
 		$this->addStepSlider('amount', '金額', 0, ...($steps = self::getValidArray($max_amount)));

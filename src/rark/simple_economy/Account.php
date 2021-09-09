@@ -46,7 +46,7 @@ class Account{
 	}
 
 	public static function findByName(string $name):?self{
-		return isset(self::$instances[$name])? isset(self::$instances[$name]): null;
+		return isset(self::$instances[$name])? self::$instances[$name]: null;
 	}
 
 	public function getName():string{
