@@ -17,16 +17,23 @@ class Money extends Config{
 	protected string $prefix;
 	protected bool $prefix_pos;
 	protected int $default;
+	protected Ranking $ranking;
+	protected Ranking $total_ranking;
 
 	public function __construct(string $name, string $prefix, bool $prefix_pos, int $default){
 		$this->name = $name;
 		$this->prefix = $prefix;
 		$this->prefix_pos = $prefix_pos;
+		$this->default = $default;
+		$this->ranking = new Ranking($this);
+		$this->total_ranking = new Ranking($this, true);
+		$this->updateRanking();
 		parent::__construct(Main::getPluginDataPath().$name.'json', Config::JSON);
 	}
 
 	public function __destruct(){
 		$this->save();
+		$this->ranking->save();
 	}
 
 	public function getName():string{
@@ -107,10 +114,21 @@ class Money extends Config{
 		return $this->getMoney($account)-$amount > -1;
 	}
 
-	const OPTION_EXCLUSION_OPERATORS = 0b001;
-	const OPTION_TOTAL_MONEY = 0b010;
-	const OPTION_VALID_MONEY = 0b100;
-	public function getRanking(int $option){
+	public function getRanking(bool $is_total = false):Ranking{
+		return $is_total? clone $this->total_ranking: clone $this->ranking; 
+	}
 
+	public function updateRanking(bool $is_total = false):void{
+		$old = $is_total? $this->get(self::KEY_TOTAL, []): $this->get(self::KEY_VALID, []);
+        $names = [];
+        $values = [];
+
+		foreach($old as $name => $value){
+			$names[] = $name;
+			$values[] = $value;
+		}
+		array_multisort($values, $names);
+		$array = array_reverse(array_combine($names, $value));
+		$is_total? $this->total_ranking->upload($array): $this->ranking->upload($array);
 	}
 }
