@@ -9,6 +9,8 @@ use pocketmine\event\player\PlayerJoinEvent;
 class EventHandler implements Listener{
 
 	public function onJoin(PlayerJoinEvent $ev):void{
-		$ev->getPlayer();
+		if(Account::findByName($ev->getPlayer()->getName()) === null){
+			new Account($ev->getPlayer()->getName());
+		}
 	}
 }

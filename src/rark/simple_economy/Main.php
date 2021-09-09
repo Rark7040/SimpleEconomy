@@ -26,9 +26,8 @@ class Main extends PluginBase{
 		Economy::init($this->getConfig());
 		Account::init();
 		$this->getServer()->getCommandMap()->register($this->getName(), new MoneyCommand($this));
+		$this->getServer()->getPluginManager()->registerEvents(new EventHandler, $this);
 	}
-
-	
 
 	public static function getPluginDataPath():string{
 		return self::$data_folder;
