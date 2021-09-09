@@ -24,6 +24,10 @@ class Economy{
 		}
 	}
 
+	public static function registerCurrency(Money $money):void{
+		self::$currencies[$money->getName()] = $money;
+	}
+
 	public static function getInstance(string $name):?Money{
 		return isset(self::$currencies[$name])? self::$currencies[$name]: null;
 	}
