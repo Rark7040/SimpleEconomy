@@ -5,6 +5,7 @@ namespace rark\simple_economy;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
+use rark\simple_economy\command\MoneyCommand;
 use rark\simple_economy\libs\CortexPE\Commando\PacketHooker;
 
 class Main extends PluginBase{
@@ -24,6 +25,7 @@ class Main extends PluginBase{
 		}
 		Account::init();
 		Economy::init(new Config($this->getDataFolder().'Config.yml', Config::YAML));
+		$this->getServer()->getCommandMap()->register($this->getName(), new MoneyCommand($this));
 	}
 
 	public static function getPluginDataPath():string{
