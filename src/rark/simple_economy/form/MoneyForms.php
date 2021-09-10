@@ -32,6 +32,7 @@ class MoneyForms{
 			}
 			$player->sendForm(
 				new InputAmountForm(
+					$money,
 					1000_0000,
 					function(int $amount) use($target, $money):void{
 						$money->addMoney($target, $amount);
@@ -62,6 +63,7 @@ class MoneyForms{
 			}
 			$player->sendForm(
 				new InputAmountForm(
+					$money,
 					$money->getMoney($account),
 					function(int $amount) use($account, $target, $money):void{
 						$money->giveMoney($account, $target, $amount);
@@ -91,6 +93,7 @@ class MoneyForms{
 			}
 			$player->sendForm(
 				new InputAmountForm(
+					$money,
 					1000_0000,
 					function(int $amount) use($target, $money):void{
 						$money->reduceMoney($target, $amount);
@@ -120,6 +123,7 @@ class MoneyForms{
 			}
 			$player->sendForm(
 				new InputAmountForm(
+					$money,
 					1000_0000,
 					function(int $amount) use($target, $money):void{
 						$money->setMoney($target, $amount);

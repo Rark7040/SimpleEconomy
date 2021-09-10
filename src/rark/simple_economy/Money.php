@@ -106,7 +106,7 @@ class Money extends Config{
 	}
 
 	public function canAddMoney(Account $account, int $amount):bool{
-		return $this->getMoney($account)+$amount < 1000_0000;
+		return $this->getMoney($account)+$amount <= 100_0000;
 	}
 
 	public function canReduceMoney(Account $account, int $amount):bool{
