@@ -39,7 +39,7 @@ class Account{
 		}
 	}
 
-	public function __destruct(){
+	public static function save():void{
 		$conf = new Config(Main::getPluginDataPath().'Accounts.json', Config::JSON);
 		$conf->setAll(array_combine(array_keys(self::$instances), array_fill(0, count(self::$instances), true)));
 		$conf->save();

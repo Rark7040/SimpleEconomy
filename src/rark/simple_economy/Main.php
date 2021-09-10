@@ -29,6 +29,11 @@ class Main extends PluginBase{
 		$this->getServer()->getPluginManager()->registerEvents(new EventHandler, $this);
 	}
 
+	protected function onDisable():void{
+		Account::save();
+		Economy::save();
+	}
+
 	public static function getPluginDataPath():string{
 		return self::$data_folder;
 	}

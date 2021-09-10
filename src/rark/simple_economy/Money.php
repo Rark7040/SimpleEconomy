@@ -30,9 +30,10 @@ class Money extends Config{
 		$this->total_ranking = new Ranking($this, true);
 	}
 
-	public function __destruct(){
-		$this->save();
+	public function save():void{
+		parent::save();
 		$this->ranking->save();
+		$this->total_ranking->save();
 	}
 
 	public function getName():string{
@@ -61,7 +62,7 @@ class Money extends Config{
 
 	public function getMoney(Account $account):int{
 		$old = $this->get(self::KEY_VALID, []);
-		return isset($old[$account->getName()])? $old[$account]: $this->default;
+		return isset($old[$account->getName()])? $old[$account->getName()]: $this->default;
 	}
 
 	public function addMoney(Account $account, int $amount):bool{

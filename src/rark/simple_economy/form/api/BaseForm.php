@@ -102,7 +102,7 @@ abstract class BaseForm implements Form{
 
 			}else{
 				$json['button1'] = $this->contents[0];
-				$json['botton2'] = $this->contents[1];
+				$json['button2'] = $this->contents[1];
 			}
 		}
 		return $json;
