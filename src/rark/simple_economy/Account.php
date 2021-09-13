@@ -27,6 +27,8 @@ class Account{
 	}
 
 	public function __construct(string $name){
+		$name = strtolower($name);
+
 		if(!isset(self::$instances[$name])){
 			if(Server::getInstance()->getOfflinePlayer($name) === null){
 				throw new \ErrorException('不正なアカウントが生成されました');
@@ -46,6 +48,7 @@ class Account{
 	}
 
 	public static function findByName(string $name):?self{
+		$name = strtolower($name);
 		return isset(self::$instances[$name])? self::$instances[$name]: null;
 	}
 
