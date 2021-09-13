@@ -24,7 +24,7 @@ class InputAmountForm extends CustomForm{
 			$result = $data['amount1']*1_0000+$data['amount2']*1000+$data['amount3']*100;
 			
 			if($amount !== null and $result > $amount){
-				$player->sendMessage(TextFormat::RED.'エラーが発生しました 101');
+				$player->sendMessage(TextFormat::RED.'選択された値は所持金より多いです');
 				return;
 			}
 			$warning = new ModalForm('続行', '閉じる');

@@ -44,7 +44,7 @@ class GiveSubCommand extends BaseSubCommand{
 				$sender->sendMessage(TextFormat::GREEN.$account->getName().'に'.$money->getFormatted($amount).'を渡しました');
 
 			}else{
-				$sender->sendMessage(TextFormat::RED.$account->getName().'はこれ以上お金を持てません！');
+				$sender->sendMessage(TextFormat::RED.$account->getName().'はこれ以上お金を持てないか、あなたの所持金が不足しています');
 			}
 			return;
 		}

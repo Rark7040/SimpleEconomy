@@ -75,7 +75,7 @@ class MoneyForms{
 							$player->sendMessage(TextFormat::GREEN.$target->getName().'に'.$money->getFormatted($amount).'を渡しました');
 			
 						}else{
-							$player->sendMessage(TextFormat::RED.$target->getName().'はこれ以上お金を持てません！');
+							$player->sendMessage(TextFormat::RED.$target->getName().'はこれ以上お金を持てないか、あなたの所持金が不足しています');
 						}
 					}
 				)
