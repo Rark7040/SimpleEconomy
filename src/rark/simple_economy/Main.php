@@ -20,9 +20,7 @@ class Main extends PluginBase{
 		}
 
 		$this->reloadConfig();
-		if(!$this->saveResource('config.yml', true)){
-			throw new \RuntimeException('Configが正しく生成できませんでした');
-		}
+		$this->saveResource('config.yml');
 		Economy::init($this->getConfig());
 		Account::init();
 		$this->getServer()->getCommandMap()->register($this->getName(), new MoneyCommand($this));

@@ -1,10 +1,10 @@
 'currencies':
-  'yen':
+  'yen': #通貨の名前
     'prefix': '￥'
     #true => 数字の先頭  $1,000
     #false => 数字の後ろ 1,000$
     'prefix_position': true
-    'default': 1000
+    'default': 1000 #最初にプレイヤーが持っている所持金
     
   'dollar': 
     'prefix': '$'
