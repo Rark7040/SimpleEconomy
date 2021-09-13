@@ -34,8 +34,13 @@ class MoneyForms{
 				new InputAmountForm(
 					$money,
 					null,
-					function(int $amount) use($target, $money):void{
-						$money->addMoney($target, $amount);
+					function(Player $player, int $amount) use($target, $money):void{
+						if($money->addMoney($target, $amount)){
+							$player->sendMessage(TextFormat::GREEN.$target->getName().'に'.$money->getFormatted($amount).'を渡しました');
+			
+						}else{
+							$player->sendMessage(TextFormat::RED.$target->getName().'はこれ以上お金を持てません！');
+						}
 					}
 				)
 			);
@@ -65,8 +70,13 @@ class MoneyForms{
 				new InputAmountForm(
 					$money,
 					$money->getMoney($account),
-					function(int $amount) use($account, $target, $money):void{
-						$money->giveMoney($account, $target, $amount);
+					function(Player $player, int $amount) use($account, $target, $money):void{
+						if($money->giveMoney($account, $target, $amount)){
+							$player->sendMessage(TextFormat::GREEN.$target->getName().'に'.$money->getFormatted($amount).'を渡しました');
+			
+						}else{
+							$player->sendMessage(TextFormat::RED.$target->getName().'はこれ以上お金を持てません！');
+						}
 					}
 				)
 			);
@@ -95,8 +105,13 @@ class MoneyForms{
 				new InputAmountForm(
 					$money,
 					null,
-					function(int $amount) use($target, $money):void{
-						$money->reduceMoney($target, $amount);
+					function(Player $player, int $amount) use($target, $money):void{
+						if($money->reduceMoney($target, $amount)){
+							$player->sendMessage(TextFormat::GREEN.$target->getName().'から'.$money->getFormatted($amount).'を取り上げました');
+			
+						}else{
+							$player->sendMessage(TextFormat::RED.$target->getName().'からはこれ以上お金を取り上げれません！');
+						}
 					}
 				)
 			);
@@ -125,8 +140,9 @@ class MoneyForms{
 				new InputAmountForm(
 					$money,
 					null,
-					function(int $amount) use($target, $money):void{
+					function(Player $player, int $amount) use($target, $money):void{
 						$money->setMoney($target, $amount);
+						$player->sendMessage(TextFormat::GREEN.$target->getName().'の所持金を'.$money->getFormatted($amount).'に設定しました');
 					}
 				)
 			);

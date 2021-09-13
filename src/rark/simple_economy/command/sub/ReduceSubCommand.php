@@ -46,8 +46,13 @@ class ReduceSubCommand extends BaseSubCommand{
 				$sender->sendMessage(TextFormat::RED.'不正な値です');
 				return;
 			}
-			$money->reduceMoney($account, $amount);
-			$sender->sendMessage(TextFormat::GREEN.$account->getName().'から'.$money->getFormatted($amount).'を取り上げました');
+
+			if($money->reduceMoney($account, $amount)){
+				$sender->sendMessage(TextFormat::GREEN.$account->getName().'から'.$money->getFormatted($amount).'を取り上げました');
+
+			}else{
+				$sender->sendMessage(TextFormat::RED.$account->getName().'からはこれ以上お金を取り上げれません！');
+			}
 			return;
 		}
 		$sender->sendForm(MoneyForms::getReduceForm());

@@ -47,8 +47,13 @@ class AddSubCommand extends BaseSubCommand{
 				$sender->sendMessage(TextFormat::RED.'不正な値です');
 				return;
 			}
-			$money->addMoney($account, $amount);
-			$sender->sendMessage(TextFormat::GREEN.$account->getName().'に'.$money->getFormatted($amount).'を渡しました');
+			if($money->addMoney($account, $amount)){
+				$sender->sendMessage(TextFormat::GREEN.$account->getName().'に'.$money->getFormatted($amount).'を渡しました');
+
+			}else{
+				$sender->sendMessage(TextFormat::RED.$account->getName().'はこれ以上お金を持てません！');
+			}
+			
 			return;
 		}
 		$sender->sendForm(MoneyForms::getAddForm());

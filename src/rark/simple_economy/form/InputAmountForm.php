@@ -30,7 +30,7 @@ class InputAmountForm extends CustomForm{
 			$warning = new ModalForm('続行', '閉じる');
 			$warning->label = '現在選択している金額は、'.TextFormat::YELLOW.$money->getFormatted($result).TextFormat::RESET.'です。'.PHP_EOL.'処理を続行しますか?';
 			$warning->submit = function(Player $player, bool $data) use($result, $func):void{
-				if($data) ($func)($result);
+				if($data) ($func)($player, $result);
 			};
 			$player->sendForm($warning);
 		};
