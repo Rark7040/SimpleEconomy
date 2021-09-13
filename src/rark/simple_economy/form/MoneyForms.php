@@ -157,27 +157,4 @@ class MoneyForms{
 		};
 		return $form;
 	}
-
-	public static function getRankingForm():CustomForm{
-		$form = new CustomForm;
-		$form->addDropdown('currency', '種類', 0, ...Economy::getAllMoneyNames());
-		$form->addToggle('is_total', '所持金額 | 総取得金額', false);
-		$form->submit = function(Player $player, array $data):void{
-			if(!isset($data['currency']) or !isset($data['is_total'])){
-				$player->sendMessage(TextFormat::RED.'不正な入力データです');
-				return;
-			}
-			$money = Economy::getInstance(Economy::getAllMoneyNames()[$data['currency']]);
-
-			if(!$money instanceof Money){
-				$player->sendMessage(TextFormat::RED.'通貨インスタンスを生成できませんでした');
-				return;
-			}
-			$ranking = new SimpleForm;
-			$ranking->label = $money->getRanking((bool) $data['is_total'])->__toString();
-			$ranking->addButton('close');
-			$player->sendForm($ranking);
-		};
-		return $form;
-	}
 }

@@ -24,26 +24,22 @@ class MoneyCommand extends BaseCommand{
 	protected function prepare():void{
 		$this->registerSubCommand(new AddSubCommand);
 		$this->registerSubCommand(new GiveSubCommand);
-		$this->registerSubCommand(new RankingSubCommand);
 		$this->registerSubCommand(new ReduceSubCommand);
 		$this->registerSubCommand(new SetSubCommand);
 		$this->registerSubCommand(new ViewSubCommand);
 	}
 
 	public function onRun(CommandSender $sender, string $label, array $args):void{
-		$usage = <<<USAGE
-			[Usage]
-			/money give <string:name> <int:amount>
-			/money ranking
-			/money View <string:name>
-		USAGE;
+		$usage = ''.
+			'[Usage]'.
+			'/money give <string:name> <int:amount>'.PHP_EOL.
+			'/money View <string:name>'.PHP_EOL;
 		
 		if(Server::getInstance()->isOp($sender->getName())){
-			$usage .= <<<ADD
-				/money set <string:name> <int:amount>
-				/money add <string:name> <int:amount>
-				/money reduce <string:name> <int:amount>
-			ADD;
+			$usage .= ''.
+				'/money set <string:name> <int:amount>'.PHP_EOL.
+				'/money add <string:name> <int:amount>'.PHP_EOL.
+				'/money reduce <string:name> <int:amount>'.PHP_EOL;
 		}
 		$sender->sendMessage($usage);
 	}

@@ -30,6 +30,14 @@ class Main extends PluginBase{
 	}
 
 	protected function onDisable():void{
+		$this->allsave();
+	}
+
+	public function __destruct(){
+		$this->allsave();
+	}
+
+	protected function allsave():void{
 		Account::save();
 		Economy::save();
 	}
