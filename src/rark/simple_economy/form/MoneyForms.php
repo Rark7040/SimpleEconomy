@@ -160,17 +160,22 @@ class MoneyForms{
 			}
 			$target_name = Account::getAllAccountNames()[$data['account']];
 			$target = Account::findByName($target_name)?? new Account($target_name);
-			$view_form = new SimpleForm;
-			
-			foreach(Economy::getAllMoneyNames() as $name){
-				$money = Economy::getInstance($name);
-
-				if(!$money instanceof Money) continue;
-				$view_form->label .= $money->getFormatted($money->getMoney($target)).PHP_EOL.PHP_EOL;
-			}
-			$view_form->addButton('close');
-			$player->sendForm($view_form);
+			$player->sendForm(self::createViewForm($target));
 		};
 		return $form;
+	}
+
+	public static function createViewForm(Account $target):SimpleForm{
+		$view_form = new SimpleForm;
+		$view_form->label = TextFormat::BOLD.TextFormat::AQUA.'【'.TextFormat::WHITE.$target->getName().'さんの所持金一覧'.TextFormat::AQUA.'】'.PHP_EOL.PHP_EOL;
+
+		foreach(Economy::getAllMoneyNames() as $name){
+			$money = Economy::getInstance($name);
+
+			if(!$money instanceof Money) continue;
+			$view_form->label .= TextFormat::YELLOW.'- '.$money->getFormatted($money->getMoney($target)).PHP_EOL;
+		}
+		$view_form->addButton('close');
+		return $view_form;
 	}
 }

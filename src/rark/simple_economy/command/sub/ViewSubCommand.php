@@ -32,20 +32,12 @@ class ViewSubCommand extends BaseSubCommand{
 		}
 		if(isset($args['account'])){
 			$account = Account::findByName($args['account']);;
-			$view_form = new SimpleForm;
 			
 			if($account === null){
 				$sender->sendMessage(TextFormat::RED.'不正な値です');
 				return;
 			}
-			foreach(Economy::getAllMoneyNames() as $name){
-				$money = Economy::getInstance($name);
-
-				if(!$money instanceof Money) continue;
-				$view_form->label .= $money->getFormatted($money->getMoney($account)).PHP_EOL.PHP_EOL;
-			}
-			$view_form->addButton('close');
-			$sender->sendForm($view_form);
+			$sender->sendForm(MoneyForms::createViewForm($account));
 			return;
 		}
 		$sender->sendForm(MoneyForms::getViewForm());
