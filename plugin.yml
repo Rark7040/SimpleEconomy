@@ -3,6 +3,7 @@ version: 1.0.0
 main: rark\simple_economy\Main
 api: 4.0.0
 author: RarkHopper
+description: PM4.0用の経済プラグイン
 permissions:
   simple_economy.command.op:
     escription: "Allows the user to run the example command"
