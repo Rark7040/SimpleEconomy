@@ -41,7 +41,7 @@ class GiveSubCommand extends BaseSubCommand{
 				return;
 			}
 			$money->giveMoney(Account::findByName($sender->getName())?? new Account($sender->getName()), $account, $amount);
-			$sender->sendMessage(TextFormat::RED.$account->getName().'に'.$money->getFormatted($amount).'を渡しました');
+			$sender->sendMessage(TextFormat::GREEN.$account->getName().'に'.$money->getFormatted($amount).'を渡しました');
 			return;
 		}
 		$sender->sendForm(MoneyForms::getGiveForm());

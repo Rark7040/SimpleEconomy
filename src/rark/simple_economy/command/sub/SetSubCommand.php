@@ -47,7 +47,7 @@ class SetSubCommand extends BaseSubCommand{
 				return;
 			}
 			$money->setMoney($account, $amount);
-			$sender->sendMessage(TextFormat::RED.$account->getName().'の所持金を'.$money->getFormatted($amount).'に設定しました');
+			$sender->sendMessage(TextFormat::GREEN.$account->getName().'の所持金を'.$money->getFormatted($amount).'に設定しました');
 			return;
 		}
 		$sender->sendForm(MoneyForms::getSetForm());

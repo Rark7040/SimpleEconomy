@@ -46,6 +46,7 @@ class ViewSubCommand extends BaseSubCommand{
 			}
 			$view_form->addButton('close');
 			$sender->sendForm($view_form);
+			return;
 		}
 		$sender->sendForm(MoneyForms::getViewForm());
 	}

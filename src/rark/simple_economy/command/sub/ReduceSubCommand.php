@@ -47,7 +47,7 @@ class ReduceSubCommand extends BaseSubCommand{
 				return;
 			}
 			$money->reduceMoney($account, $amount);
-			$sender->sendMessage(TextFormat::RED.$account->getName().'から'.$money->getFormatted($amount).'を取り上げました');
+			$sender->sendMessage(TextFormat::GREEN.$account->getName().'から'.$money->getFormatted($amount).'を取り上げました');
 			return;
 		}
 		$sender->sendForm(MoneyForms::getReduceForm());
