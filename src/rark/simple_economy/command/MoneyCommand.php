@@ -8,7 +8,6 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
 use rark\simple_economy\command\sub\AddSubCommand;
 use rark\simple_economy\command\sub\GiveSubCommand;
-use rark\simple_economy\command\sub\RankingSubCommand;
 use rark\simple_economy\command\sub\ReduceSubCommand;
 use rark\simple_economy\command\sub\SetSubCommand;
 use rark\simple_economy\command\sub\ViewSubCommand;
