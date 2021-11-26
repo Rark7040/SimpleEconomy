@@ -66,7 +66,7 @@ class Account{
 		if($player === null) return null;
 		$accurate_name = strtolower($player->getName());
 		return isset(self::$instances[$accurate_name])? self::$instances[$accurate_name]: self::create($player);
-		}
+	}
 
 	public function getName():string{
 		return $this->name;

@@ -100,6 +100,6 @@ class Money extends Config{
 	}
 
 	public function canReduceMoney(Account $account, int $amount):bool{
-		return $this->getMoney($account)-$amount > -1;
+		return $this->getMoney($account) >= $amount;
 	}
 }
