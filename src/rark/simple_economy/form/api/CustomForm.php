@@ -1,9 +1,9 @@
 <?php
-
 declare(strict_types = 1);
 
 namespace rark\simple_economy\form\api;
 
+use pocketmine\player\Player;
 
 class CustomForm extends BaseForm{
 
@@ -58,5 +58,23 @@ class CustomForm extends BaseForm{
 			'text' => $text,
 			'default' => $default
 		];
+	}
+
+	final public function handleResponse(Player $player, $data):void{
+		if($data === null or count($this->contents) !== count($data)){
+			$this->receiveIllegalData($player, $data);
+			return;
+		}
+		$data = array_combine(array_keys($this->contents), $data);
+		$this->onSubmit($player, $data);
+	}
+
+	final public function jsonSerialize(){
+		$json = [
+			'type' => self::CUSTOM,
+			'title' => $this->title
+		];
+		$json['content'] = array_values($this->contents);
+		return $json;
 	}
 }

@@ -3,7 +3,8 @@ declare(strict_types = 1);
 
 namespace rark\simple_economy;
 
-use Exception;
+use pocketmine\player\Player;
+use pocketmine\player\XboxLivePlayerInfo;
 use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
@@ -12,26 +13,28 @@ class Account{
 	/** @var self[string] */
 	protected static array $instances = [];
 	protected string $name;
+	protected string $xuid;
 
 	public static function init():void{
 		$conf = new Config(Main::getPluginDataPath().'Accounts.json', Config::JSON);
 
-		foreach($conf->getAll() as $name => $true){
+		foreach($conf->getAll() as $name => $xuid){
 			try{
-				self::$instances[$name] = new self($name);
+				self::$instances[$name] = new self($name, $xuid);
 
-			}catch(Exception){
-				print_r(TextFormat::RED.$name.'のアカウントが復元できませんでした(考えられる原因: playersフォルダ上のデータ削除)');
+			}catch(\Exception){
+				Server::getInstance()->getLogger()->error(TextFormat::RED.$name.'のアカウントが復元できませんでした(考えられる原因: playersフォルダ上のデータ削除)');
 			}
 		}
 	}
 
-	public function __construct(string $name){
+	public function __construct(string $name, string $xuid){
+		$this->xuid = $xuid;
 		$name = strtolower($name);
 
 		if(!isset(self::$instances[$name])){
 			if(Server::getInstance()->getOfflinePlayer($name) === null){
-				throw new \ErrorException('不正なアカウントが生成されました');
+				throw new \RuntimeException('不正なアカウントが生成されました');
 			}
 			$this->name = $name;
 			self::$instances[$this->name] = $this;
@@ -39,6 +42,13 @@ class Account{
 		}else{
 			$this->name = $name;
 		}
+	}
+
+	public static function create(Player $player):?Account{
+		$info = $player->getNetworkSession()->getPlayerInfo();
+
+		if(!$info instanceof XboxLivePlayerInfo) return null;
+		return new self(strtolower($player->getName()), $info->getXuid());
 	}
 
 	public static function save():void{
@@ -49,11 +59,21 @@ class Account{
 
 	public static function findByName(string $name):?self{
 		$name = strtolower($name);
-		return isset(self::$instances[$name])? self::$instances[$name]: null;
-	}
+
+		if(isset(self::$instances[$name])) return self::$instances[$name];
+		$player = Server::getInstance()->getPlayerByPrefix($name);
+
+		if($player === null) return null;
+		$accurate_name = strtolower($player->getName());
+		return isset(self::$instances[$accurate_name])? self::$instances[$accurate_name]: self::create($player);
+		}
 
 	public function getName():string{
 		return $this->name;
+	}
+
+	public function getXuid():string{
+		return $this->xuid;
 	}
 	
 	/**

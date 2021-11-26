@@ -40,7 +40,13 @@ class GiveSubCommand extends BaseSubCommand{
 				$sender->sendMessage(TextFormat::RED.'不正な値です');
 				return;
 			}
-			if($money->giveMoney(Account::findByName($sender->getName())?? new Account($sender->getName()), $account, $amount)){
+			$sender_account = Account::findByName($sender->getName())?? Account::create($sender);
+
+			if($sender_account === null){
+				$sender->sendMessage(TextFormat::RED.'xboxアカウントを取得できませんでした');
+				return;
+			}
+			if($money->giveMoney($account, $account, $amount)){
 				$sender->sendMessage(TextFormat::GREEN.$account->getName().'に'.$money->getFormatted($amount).'を渡しました');
 
 			}else{

@@ -10,7 +10,7 @@ class EventHandler implements Listener{
 
 	public function onJoin(PlayerJoinEvent $ev):void{
 		if(Account::findByName($ev->getPlayer()->getName()) === null){
-			new Account($ev->getPlayer()->getName());
+			Account::create($ev->getPlayer());
 		}
 	}
 }

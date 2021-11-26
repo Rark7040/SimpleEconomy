@@ -8,7 +8,6 @@ use rark\simple_economy\command\MoneyCommand;
 use rark\simple_economy\libs\CortexPE\Commando\PacketHooker;
 
 class Main extends PluginBase{
-
 	protected static string $data_folder;
 
 	protected function onEnable():void{

@@ -7,6 +7,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
 use rark\simple_economy\command\sub\AddSubCommand;
+use rark\simple_economy\command\sub\ExampleSubCommand;
 use rark\simple_economy\command\sub\GiveSubCommand;
 use rark\simple_economy\command\sub\ReduceSubCommand;
 use rark\simple_economy\command\sub\SetSubCommand;

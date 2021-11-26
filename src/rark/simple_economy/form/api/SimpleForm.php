@@ -1,9 +1,9 @@
 <?php
-
 declare(strict_types = 1);
 
 namespace rark\simple_economy\form\api;
 
+use pocketmine\player\Player;
 
 class SimpleForm extends BaseForm{
 
@@ -17,5 +17,23 @@ class SimpleForm extends BaseForm{
 			];
 		}
 		$this->contents[] = $button;
+	}
+
+	final public function handleResponse(Player $player, $data):void{
+		if(!is_int($data)){
+			$this->receiveIllegalData($player, $data);
+			return;
+		}
+		$this->onSubmit($player, $data);
+	}
+
+	final public function jsonSerialize(){
+		$json = [
+			'type' => self::SIMPLE,
+			'title' => $this->title
+		];
+		$json['content'] = $this->label;
+		$json['buttons'] = $this->contents;
+		return $json;
 	}
 }

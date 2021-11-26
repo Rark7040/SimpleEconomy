@@ -3,9 +3,8 @@ declare(strict_types = 1);
 
 namespace rark\simple_economy;
 
-use InvalidArgumentException;
+use pocketmine\Server;
 use pocketmine\utils\Config;
-use pocketmine\utils\TextFormat;
 
 class Economy{
 	/** @var Money[string] */
@@ -14,10 +13,10 @@ class Economy{
 	public static function init(Config $conf){
 		$setting = $conf->getAll();
 
-		if(!isset($setting['currencies'])) throw new InvalidArgumentException('currencies キーが存在しません');
+		if(!isset($setting['currencies'])) throw new \InvalidArgumentException('currencies キーが存在しません');
 		foreach($setting['currencies'] as $name => $data){
 			if(!isset($data['prefix']) or !isset($data['prefix_position']) or !isset($data['default'])){
-				print_r(TextFormat::RED.'必要なキーが存在しない為,'.$name.'を正しく生成できませんでした');
+				Server::getInstance()->getLogger()->error('必要なキーが存在しない為,'.$name.'を正しく生成できませんでした');
 				continue;
 			}
 			self::$currencies[$name] = new Money($name, $data['prefix'], $data['prefix_position'], $data['default']);

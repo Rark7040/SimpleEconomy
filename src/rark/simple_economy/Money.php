@@ -9,7 +9,6 @@ use rark\simple_economy\event\GiveMoneyEvent;
 use rark\simple_economy\event\ReduceMoneyEvent;
 
 class Money extends Config{
-
 	const KEY_VALID = 'valid';
 	const KEY_TOTAL = 'total';
 
@@ -46,13 +45,13 @@ class Money extends Config{
 
 	public function setMoney(Account $account, int $amount):void{
 		$old = $this->get(self::KEY_VALID, []);
-		$old[$account->getName()] = $amount;
+		$old[$account->getXuid()] = $amount;
 		$this->set(self::KEY_VALID, $old);
 	}
 
 	public function getMoney(Account $account):int{
 		$old = $this->get(self::KEY_VALID, []);
-		return isset($old[$account->getName()])? $old[$account->getName()]: $this->default;
+		return isset($old[$account->getXuid()])? $old[$account->getXuid()]: $this->default;
 	}
 
 	public function addMoney(Account $account, int $amount):bool{
@@ -63,8 +62,8 @@ class Money extends Config{
 		if(!$this->canAddMoney($account, $amount) or $ev->isCancelled()) return false;
 		$old = $this->get(self::KEY_TOTAL, []);
 
-		if(!isset($old[$account->getName()])) $old[$account->getName()] = 0;
-		$old[$account->getName()] += $amount;
+		if(!isset($old[$account->getXuid()])) $old[$account->getXuid()] = 0;
+		$old[$account->getXuid()] += $amount;
 		$this->set(self::KEY_TOTAL, $old);
 		$this->setMoney($account, $this->getMoney($account)+$amount);
 		return true;
@@ -72,7 +71,7 @@ class Money extends Config{
 
 	public function getTotalMoney(Account $account):int{
 		$old = $this->get(self::KEY_TOTAL, []);
-		return isset($old[$account->getName()])? $old[$account]: $this->default;
+		return isset($old[$account->getXuid()])? $old[$account]: $this->default;
 	}
 
 	public function reduceMoney(Account $account, int $amount):bool{
