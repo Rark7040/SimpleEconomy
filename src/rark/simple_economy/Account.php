@@ -10,7 +10,7 @@ use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat;
 
 class Account{
-	/** @var self[string] */
+	/** @var array<string, self> */
 	protected static array $instances = [];
 	protected string $name;
 	protected string $xuid;
@@ -53,7 +53,12 @@ class Account{
 
 	public static function save():void{
 		$conf = new Config(Main::getPluginDataPath().'Accounts.json', Config::JSON);
-		$conf->setAll(array_combine(array_keys(self::$instances), array_fill(0, count(self::$instances), true)));
+		$conf_data = [];
+
+		foreach(self::$instances as $account){
+			$conf_data[$account->getName()] = $account->getXuid();
+		}
+		$conf->setAll($conf_data);
 		$conf->save();
 	}
 
