@@ -49,7 +49,7 @@ use rark\simple_economy\Economy;
 
 /** @var pocketmine\player\Player */
 $player;
-$account = Account::findByName($player->getName());
+$account = Account::findByName($player->getName())?? new Account($player->getName());
 $money = Economy::getInstance('yen');
 
 if($money === null) return;

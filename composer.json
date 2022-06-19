@@ -1,0 +1,30 @@
+{
+    "name": "rarkhopper/simple_economy",
+    "license": "MIT",
+    "description": "",
+    "require": {
+        "php": "8.*",
+        "php-64bit": "*",
+        "pocketmine/pocketmine-mp": "4.*",
+        "phpstan/phpstan": "*"
+    },
+    "require-dev": {
+        "ext-ctype": "*",
+        "ext-curl": "*",
+        "ext-date": "*",
+        "ext-hash": "*",
+        "ext-openssl": "*",
+        "ext-pcre": "*",
+        "ext-phar": "*",
+        "ext-pthreads": "*",
+        "ext-reflection": "*",
+        "ext-sockets": "*",
+        "ext-spl": "*",
+        "ext-yaml": "*",
+        "ext-zip": "*",
+        "ext-zlib": "*",
+        "ext-sqlite3": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*"
+    }
+}

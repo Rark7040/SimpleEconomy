@@ -22,10 +22,13 @@ class MoneyForms{
 				$player->sendMessage(TextFormat::RED.'不正な入力データです');
 				return;
 			}
-			$name = Account::getAllAccountNames()[$data['account']];
-			$target = Account::findByName($name)?? new Account($name);
+			$target = Account::findByName(Account::getAllAccountNames()[$data['account']]);
 			$money = Economy::getInstance(Economy::getAllMoneyNames()[$data['currency']]);
 
+			if($target === null){
+				$player->sendMessage(TextFormat::RED.'対象のaccountを取得できませんでした');
+				return;
+			}
 			if(!$money instanceof Money){
 				$player->sendMessage(TextFormat::RED.'通貨インスタンスを生成できませんでした');
 				return;
@@ -58,10 +61,13 @@ class MoneyForms{
 				return;
 			}
 			$account = Account::findByName($player->getName());
-			$name = Account::getAllAccountNames()[$data['account']];
-			$target = Account::findByName($name)?? new Account($name);
+			$target = Account::findByName(Account::getAllAccountNames()[$data['account']]);
 			$money = Economy::getInstance(Economy::getAllMoneyNames()[$data['currency']]);
 
+			if($target === null){
+				$player->sendMessage(TextFormat::RED.'対象のaccountを取得できませんでした');
+				return;
+			}
 			if(!$money instanceof Money){
 				$player->sendMessage(TextFormat::RED.'通貨インスタンスを生成できませんでした');
 				return;
@@ -93,10 +99,13 @@ class MoneyForms{
 				$player->sendMessage(TextFormat::RED.'不正な入力データです');
 				return;
 			}
-			$name = Account::getAllAccountNames()[$data['account']];
-			$target = Account::findByName($name)?? new Account($name);
+			$target = Account::findByName(Account::getAllAccountNames()[$data['account']]);
 			$money = Economy::getInstance(Economy::getAllMoneyNames()[$data['currency']]);
 
+			if($target === null){
+				$player->sendMessage(TextFormat::RED.'対象のaccountを取得できませんでした');
+				return;
+			}
 			if(!$money instanceof Money){
 				$player->sendMessage(TextFormat::RED.'通貨インスタンスを生成できませんでした');
 				return;
@@ -128,10 +137,13 @@ class MoneyForms{
 				$player->sendMessage(TextFormat::RED.'不正な入力データです');
 				return;
 			}
-			$name = Account::getAllAccountNames()[$data['account']];
-			$target = Account::findByName($name)?? new Account($name);
+			$target = Account::findByName(Account::getAllAccountNames()[$data['account']]);
 			$money = Economy::getInstance(Economy::getAllMoneyNames()[$data['currency']]);
 
+			if($target === null){
+				$player->sendMessage(TextFormat::RED.'対象のaccountを取得できませんでした');
+				return;
+			}
 			if(!$money instanceof Money){
 				$player->sendMessage(TextFormat::RED.'通貨インスタンスを生成できませんでした');
 				return;
@@ -158,8 +170,12 @@ class MoneyForms{
 				$player->sendMessage(TextFormat::RED.'不正な入力データです');
 				return;
 			}
-			$target_name = Account::getAllAccountNames()[$data['account']];
-			$target = Account::findByName($target_name)?? new Account($target_name);
+			$target = Account::findByName(Account::getAllAccountNames()[$data['account']]);
+			
+			if($target === null){
+				$player->sendMessage(TextFormat::RED.'対象のaccountを取得できませんでした');
+				return;
+			}
 			$player->sendForm(self::createViewForm($target));
 		};
 		return $form;
